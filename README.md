@@ -223,3 +223,6 @@ print(vim.inspect(recent_projects))
 
 - All pull requests are welcome.
 - If you encounter bugs please open an issue.
+
+## TODO
+Find a maitained fork. [This](https://github.com/DrKJeff16/project.nvim) looks promising.
