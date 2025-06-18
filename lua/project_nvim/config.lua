@@ -54,8 +54,32 @@ M.setup = function(options)
     if vim.startswith(pattern, "~/") then
       pattern = home .. "/" .. pattern:sub(3, #pattern)
     end
+    if vim.endswith(pattern, "/") then
+      pattern = pattern:sub(1, #pattern-1)
+    end
     return glob.globtopattern(pattern)
   end, M.options.exclude_dirs)
+  M.options.patterns = vim.tbl_map(function(pattern)
+    local command = pattern:match("^%!?[%<%>%^%=]?")
+    if vim.endswith(command, "<") then
+      local p = pattern:sub(2)
+      if vim.startswith(p, "~/") then
+        p = home .. "/" .. p:sub(3)
+      end
+      p = string.gsub(p, "/+", "/")
+      if vim.endswith(p, "/") then
+        p = p:sub(1, #p-1)
+      end
+      local is_abs = vim.startswith(p, "/")
+      p = glob.globtopattern(p, "[^/]")
+      if not is_abs and vim.startswith(p, "^") then
+        p = "%/" .. p:sub(2)
+      end
+      return command .. p
+    else
+      return pattern
+    end
+  end, M.options.patterns)
 
   vim.opt.autochdir = false -- implicitly unset autochdir
 

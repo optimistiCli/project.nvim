@@ -3,11 +3,13 @@
 
 local M = { _TYPE = "module", _NAME = "globtopattern", _VERSION = "0.2.1.20120406" }
 
-function M.globtopattern(g)
+function M.globtopattern(g, d)
   -- Some useful references:
   -- - apr_fnmatch in Apache APR.  For example,
   --   http://apr.apache.org/docs/apr/1.3/group__apr__fnmatch.html
   --   which cites POSIX 1003.2-1992, section B.6.
+
+  d = d or '.'
 
   local p = "^" -- pattern being built
   local i = 0 -- index in g
@@ -114,9 +116,9 @@ function M.globtopattern(g)
       p = p .. "$"
       break
     elseif c == "?" then
-      p = p .. "."
+      p = p .. d
     elseif c == "*" then
-      p = p .. ".*"
+      p = p .. d .. "*"
     elseif c == "[" then
       if not charset() then
         break

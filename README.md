@@ -163,6 +163,17 @@ To specify the root has a certain directory as its direct ancestor / parent
 patterns = { ">Latex" }
 ```
 
+To specify the root has an absolute or partial path as its ancestor (same as
+above but allows for several conponents), prefix it with `<`:
+
+```lua
+patterns = {
+  "~/Projects",
+  "/Volumes/*/Projects",
+  "*LDAP*/?rojects",
+}
+```
+
 To exclude a pattern, prefix it with `!`.
 
 ```lua

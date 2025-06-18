@@ -103,6 +103,11 @@ function M.find_pattern_root()
     return false
   end
 
+  local function long_child(dir, pattern)
+    local path = get_parent(dir)
+    return path:match(pattern) ~= nil
+  end
+
   local function match(dir, pattern)
     local first_char = pattern:sub(1, 1)
     if first_char == "=" then
@@ -111,6 +116,8 @@ function M.find_pattern_root()
       return sub(dir, pattern:sub(2))
     elseif first_char == ">" then
       return child(dir, pattern:sub(2))
+    elseif first_char == "<" then
+      return long_child(dir, pattern:sub(2))
     else
       return has(dir, pattern)
     end
